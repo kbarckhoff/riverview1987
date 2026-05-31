@@ -26,7 +26,7 @@ export default function HomePage() {
               // eslint-disable-next-line @next/next/no-img-element
               <img className="hero-logo" src={site.logo} alt={`${site.schoolName} Raiders logo`} />
             ) : null}
-            <span className="kicker">Class of {site.classYear} · 40-Year Reunion</span>
+            <span className="kicker">Class of {site.classYear} Reunion</span>
             <h1>
               {site.schoolName.replace(/ High School$/, "")} <span className="gold">Raiders</span>
             </h1>
@@ -39,11 +39,7 @@ export default function HomePage() {
 
             <div className="hero-cta">
               <Link href="/classmates" className="btn">Add Your Profile</Link>
-              {e.rsvpUrl ? (
-                <a href={e.rsvpUrl} className="btn btn-outline" target="_blank" rel="noreferrer">RSVP for the Reunion</a>
-              ) : (
-                <Link href="/feed" className="btn btn-outline">Join the Conversation</Link>
-              )}
+              <Link href="/feed" className="btn btn-outline">Join the Conversation</Link>
             </div>
           </div>
         </div>
@@ -74,12 +70,12 @@ export default function HomePage() {
             <h2 className="display neon">{e.date}</h2>
             <p className="venue-line">{e.venue} · {e.time}</p>
             <p className="lede">
-              Forty years later, the Riverview High School Class of {site.classYear} is coming back
+              The Riverview High School Class of {site.classYear} is coming back
               together for a night of memories, music, laughter, and Raider pride — under the lights
               at the historic Oaks Theater.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 6 }}>
-              <Link href="/classmates" className="btn">RSVP / Add Your Info</Link>
+              <Link href="/classmates" className="btn">Add Your Info</Link>
               <Link href="/flashback" className="btn btn-outline">See the Photos</Link>
             </div>
           </div>
