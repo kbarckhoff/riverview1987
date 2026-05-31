@@ -4,32 +4,10 @@ import { getClassmates } from "@/lib/data";
 import { getCurrentMember } from "@/lib/member-auth";
 import { getProfileForMember } from "@/lib/community";
 import Avatar from "../components/Avatar";
-import { saveProfile } from "../actions";
+import ProfileFormClient from "../components/ProfileFormClient";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Classmates Directory" };
-
-function ProfileForm({ profile }) {
-  return (
-    <form action={saveProfile} className="form" style={{ maxWidth: "none" }}>
-      <label>Full name *</label>
-      <input name="full_name" required defaultValue={profile?.full_name || ""} placeholder="Your name" />
-      <div className="two-col">
-        <div><label>Maiden name</label><input name="maiden_name" defaultValue={profile?.maiden_name || ""} placeholder="(if applicable)" /></div>
-        <div><label>City &amp; state</label><input name="current_city" defaultValue={profile?.current_city || ""} placeholder="Austin, TX" /></div>
-      </div>
-      <label>What you do</label>
-      <input name="occupation" defaultValue={profile?.occupation || ""} placeholder="Occupation / what you're up to" />
-      <label>About you</label>
-      <textarea name="bio" defaultValue={profile?.bio || ""} placeholder="Share an update or a favorite RHS memory." />
-      <div className="two-col">
-        <div><label>Senior photo (then)</label><input type="file" name="photo_then" accept="image/*" /></div>
-        <div><label>Current photo (now)</label><input type="file" name="photo_now" accept="image/*" /></div>
-      </div>
-      <button className="btn" type="submit">{profile ? "Save Changes" : "Add Me to the Directory"}</button>
-    </form>
-  );
-}
 
 export default async function ClassmatesPage() {
   const classmates = await getClassmates();
@@ -57,16 +35,16 @@ export default async function ClassmatesPage() {
           ) : profile ? (
             <div className="form" style={{ maxWidth: "none" }}>
               <h3 style={{ marginTop: 0 }}>You&apos;re in the directory ✓</h3>
-              <p className="meta" style={{ marginTop: 0 }}>Your profile is live below. Need to change something?</p>
+              <p className="meta" style={{ marginTop: 0 }}>Your profile is live below. You can update it anytime — there&apos;s just one profile per person.</p>
               <details className="disclosure">
                 <summary className="btn btn-outline">Edit my info</summary>
-                <div style={{ marginTop: 16 }}><ProfileForm profile={profile} /></div>
+                <div style={{ marginTop: 16 }}><ProfileFormClient profile={profile} /></div>
               </details>
             </div>
           ) : (
             <>
               <div className="section-head"><h2>Add Your Profile</h2><p>Then &amp; now photos, where you landed, and what you&apos;ve been up to.</p></div>
-              <ProfileForm profile={null} />
+              <ProfileFormClient profile={null} />
             </>
           )}
         </div>

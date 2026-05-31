@@ -614,3 +614,28 @@ a:hover { color: var(--accent); }
 .cmt-form input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 999px; background: #0e0e0e; color: var(--text); font: inherit; }
 .cmt-form input:focus { outline: none; border-color: var(--accent); }
 .cmt-form .btn { padding: 9px 16px; }
+
+/* ---------- Soundtrack of '87 ---------- */
+.playlist-embeds { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 10px; }
+.playlist-embeds iframe { border-radius: 12px; border: 1px solid var(--border); width: 100%; }
+@media (max-width: 760px) { .playlist-embeds { grid-template-columns: 1fr; } }
+
+.song-list { margin-top: 16px; }
+.song-list.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 28px; }
+@media (max-width: 760px) { .song-list.grid2 { grid-template-columns: 1fr; } }
+
+.song-row { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+.song-row.top { align-items: flex-start; }
+.song-rank { color: var(--accent); font-weight: 900; font-size: 1.5rem; min-width: 38px; line-height: 1; }
+.song-rank.sm { font-size: 1.05rem; min-width: 30px; }
+.song-main { flex: 1; }
+.song-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.song-title { font-weight: 800; color: #fff; font-size: 1.05rem; }
+.song-artist { color: var(--muted); font-size: 0.92rem; }
+.song-note { color: var(--muted); font-size: 0.88rem; margin: 6px 0 0; max-width: 70ch; }
+.song-links { display: inline-flex; gap: 6px; margin-left: auto; }
+.song-links a {
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--accent); border: 1px solid rgba(244,194,13,0.4); border-radius: 999px; padding: 3px 11px;
+}
+.song-links a:hover { background: var(--accent); color: #111; text-decoration: none; }

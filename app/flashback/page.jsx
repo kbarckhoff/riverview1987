@@ -4,7 +4,8 @@ import { getGalleryImages } from "@/lib/gallery";
 import { getCurrentMember } from "@/lib/member-auth";
 import { ensureGalleryPosts, getGalleryFeed, getCommentsForPosts } from "@/lib/community";
 import { timeAgo } from "@/lib/format";
-import { postGalleryPhoto, addComment, toggleLike, adminDeletePost, adminDeleteComment } from "../actions";
+import { addComment, toggleLike, adminDeletePost, adminDeleteComment } from "../actions";
+import PhotoUploadClient from "../components/PhotoUploadClient";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Flashback" };
@@ -25,14 +26,7 @@ export default async function FlashbackPage() {
 
       <section className="section"><div className="container">
         {me ? (
-          <form action={postGalleryPhoto} className="form" style={{ maxWidth: 640, margin: "0 auto 30px" }}>
-            <h3 style={{ marginTop: 0 }}>Share a photo</h3>
-            <label>Photo</label>
-            <input type="file" name="photo" accept="image/*" required />
-            <label>Caption</label>
-            <input name="caption" placeholder="Say something about it" />
-            <button className="btn" type="submit">Post to Gallery</button>
-          </form>
+          <PhotoUploadClient />
         ) : (
           <p className="notice" style={{ maxWidth: 640, margin: "0 auto 30px", textAlign: "center" }}>
             <Link href="/account/login">Log in</Link> or <Link href="/account/register">create an account</Link> to post photos, like, and comment.

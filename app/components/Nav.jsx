@@ -10,6 +10,7 @@ const links = [
   { href: "/memorials", label: "Memorials" },
   { href: "/flashback", label: "Flashback" },
   { href: "/feed", label: "Feed" },
+  { href: "/soundtrack", label: "Soundtrack" },
 ];
 
 export default async function Nav() {

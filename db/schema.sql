@@ -86,3 +86,5 @@ CREATE TABLE IF NOT EXISTS likes (
 
 CREATE INDEX IF NOT EXISTS idx_classmates_name ON classmates (full_name);
 CREATE INDEX IF NOT EXISTS idx_comments_post ON comments (post_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_classmates_member ON classmates (member_id) WHERE member_id IS NOT NULL;
