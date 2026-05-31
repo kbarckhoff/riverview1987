@@ -576,3 +576,39 @@ a:hover { color: var(--accent); }
   .hero-marquee .countdown { justify-content: center; }
   .hero-cta { justify-content: center; }
 }
+
+/* ---------- Auth in nav ---------- */
+.nav-auth { display: flex; align-items: center; gap: 10px; }
+.nav-who { color: var(--accent); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.navbtn { background: var(--accent); color: #111; border: none; cursor: pointer; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 14px; border-radius: 999px; }
+.navbtn-ghost { color: #ddd; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px; }
+.navbtn-ghost:hover { color: var(--accent); }
+
+/* collapsible edit */
+.disclosure > summary { list-style: none; display: inline-block; }
+.disclosure > summary::-webkit-details-marker { display: none; }
+.disclosure > summary::marker { content: ""; }
+
+/* ---------- Gallery feed (Instagram-style) ---------- */
+.gallery-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; align-items: start; }
+.gpost { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.gpost-img { width: 100%; display: block; max-height: 460px; object-fit: cover; background: #111; }
+.gpost-body { padding: 14px 16px 16px; }
+.gpost-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.gpost-author { font-weight: 800; color: #fff; }
+.gpost-time { color: var(--muted); font-size: 0.78rem; }
+.gpost-caption { margin: 8px 0 0; }
+.gpost-actions { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.likebtn { background: transparent; border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-weight: 800; padding: 6px 12px; border-radius: 999px; font-size: 0.9rem; }
+.likebtn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.likebtn.liked { background: var(--accent); color: #111; border-color: var(--accent); }
+.likebtn:disabled { opacity: 0.55; cursor: default; }
+.gpost-cc { color: var(--muted); font-size: 0.82rem; }
+.comments { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--border); padding-top: 12px; }
+.cmt { font-size: 0.92rem; color: var(--text); }
+.cmt-author { font-weight: 800; color: var(--accent); margin-right: 4px; }
+.cmt-del { background: none; border: none; color: #ff8f86; cursor: pointer; font-size: 0.95rem; margin-left: 6px; }
+.cmt-form { display: flex; gap: 8px; margin-top: 12px; }
+.cmt-form input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 999px; background: #0e0e0e; color: var(--text); font: inherit; }
+.cmt-form input:focus { outline: none; border-color: var(--accent); }
+.cmt-form .btn { padding: 9px 16px; }

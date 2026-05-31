@@ -1,7 +1,16 @@
 -- ===========================================================
---  Class Reunion database schema (PostgreSQL)
---  Run this once: `npm run db:setup` (or paste into pgAdmin).
+--  Riverview Raiders reunion schema (PostgreSQL)
+--  Safe to re-run: everything uses IF NOT EXISTS.
 -- ===========================================================
+
+CREATE TABLE IF NOT EXISTS members (
+  id            SERIAL PRIMARY KEY,
+  email         TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  is_admin      BOOLEAN NOT NULL DEFAULT false,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
 CREATE TABLE IF NOT EXISTS classmates (
   id            SERIAL PRIMARY KEY,
@@ -14,8 +23,10 @@ CREATE TABLE IF NOT EXISTS classmates (
   lng           DOUBLE PRECISION,
   photo_then_url TEXT,
   photo_now_url  TEXT,
+  member_id     INTEGER REFERENCES members(id) ON DELETE SET NULL,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+ALTER TABLE classmates ADD COLUMN IF NOT EXISTS member_id INTEGER REFERENCES members(id) ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS memorials (
   id          SERIAL PRIMARY KEY,
@@ -41,7 +52,7 @@ CREATE TABLE IF NOT EXISTS flashback_photos (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Uploaded images live here (served via /api/photo/[id]).
+-- Uploaded image bytes (served via /api/photo/[id])
 CREATE TABLE IF NOT EXISTS photos (
   id         SERIAL PRIMARY KEY,
   mime       TEXT NOT NULL,
@@ -49,5 +60,29 @@ CREATE TABLE IF NOT EXISTS photos (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Gallery posts (each commentable/likeable). Static throwbacks get a row too.
+CREATE TABLE IF NOT EXISTS gallery_posts (
+  id         SERIAL PRIMARY KEY,
+  member_id  INTEGER REFERENCES members(id) ON DELETE SET NULL,
+  image_url  TEXT UNIQUE NOT NULL,
+  caption    TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id          SERIAL PRIMARY KEY,
+  post_id     INTEGER NOT NULL REFERENCES gallery_posts(id) ON DELETE CASCADE,
+  member_id   INTEGER REFERENCES members(id) ON DELETE SET NULL,
+  author_name TEXT NOT NULL,
+  body        TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+  post_id   INTEGER NOT NULL REFERENCES gallery_posts(id) ON DELETE CASCADE,
+  member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+  PRIMARY KEY (post_id, member_id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_classmates_name ON classmates (full_name);
-CREATE INDEX IF NOT EXISTS idx_feed_created ON feed_posts (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_comments_post ON comments (post_id);
