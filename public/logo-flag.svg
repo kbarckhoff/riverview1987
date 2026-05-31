@@ -1,0 +1,17 @@
+<svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Riverview Raiders flag logo">
+  <!-- Pole -->
+  <line x1="183" y1="14" x2="171" y2="160" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <!-- Flag body (black with white outline, swallowtail on left) -->
+  <path d="M178 22
+           C150 12 120 30 92 26
+           C64 22 40 14 18 30
+           C30 40 22 52 8 56
+           C24 62 18 74 6 82
+           C28 86 60 80 92 86
+           C124 92 154 96 176 84
+           Z"
+        fill="#111111" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Gold R -->
+  <text x="96" y="74" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="bold"
+        fill="#f4c20d" stroke="#ffffff" stroke-width="2" text-anchor="middle">R</text>
+</svg>
