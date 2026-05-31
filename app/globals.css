@@ -590,9 +590,11 @@ a:hover { color: var(--accent); }
 .disclosure > summary::marker { content: ""; }
 
 /* ---------- Gallery feed (Instagram-style) ---------- */
-.gallery-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; align-items: start; }
-.gpost { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-.gpost-img { width: 100%; display: block; max-height: 460px; object-fit: cover; background: #111; }
+.gallery-feed { column-count: 3; column-gap: 22px; }
+@media (max-width: 1000px) { .gallery-feed { column-count: 2; } }
+@media (max-width: 640px) { .gallery-feed { column-count: 1; } }
+.gpost { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 22px; }
+.gpost-img { width: 100%; aspect-ratio: 1 / 1; display: block; object-fit: cover; background: #111; }
 .gpost-body { padding: 14px 16px 16px; }
 .gpost-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .gpost-author { font-weight: 800; color: #fff; }
