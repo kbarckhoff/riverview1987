@@ -66,8 +66,10 @@ CREATE TABLE IF NOT EXISTS gallery_posts (
   member_id  INTEGER REFERENCES members(id) ON DELETE SET NULL,
   image_url  TEXT UNIQUE NOT NULL,
   caption    TEXT,
+  category   TEXT NOT NULL DEFAULT 'flashback',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+ALTER TABLE gallery_posts ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'flashback';
 
 CREATE TABLE IF NOT EXISTS comments (
   id          SERIAL PRIMARY KEY,

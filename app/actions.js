@@ -55,9 +55,10 @@ export async function postGalleryPhoto(formData) {
   const me = await getCurrentMember(); if (!me) throw new Error("Please log in.");
   const url = await storePhoto(formData.get("photo"));
   if (!url) return;
-  await query("INSERT INTO gallery_posts (member_id,image_url,caption) VALUES ($1,$2,$3) ON CONFLICT (image_url) DO NOTHING",
-    [me.id, url, str(formData.get("caption"), 300)]);
-  revalidatePath("/flashback");
+  const cat = (formData.get("category") || "flashback").toString() === "teacher" ? "teacher" : "flashback";
+  await query("INSERT INTO gallery_posts (member_id,image_url,caption,category) VALUES ($1,$2,$3,$4) ON CONFLICT (image_url) DO NOTHING",
+    [me.id, url, str(formData.get("caption"), 300), cat]);
+  revalidatePath("/flashback"); revalidatePath("/teachers");
 }
 
 export async function addComment(formData) {

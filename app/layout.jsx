@@ -3,6 +3,8 @@ import site from "@/lib/site-config";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 
+export const viewport = { width: "device-width", initialScale: 1 };
+
 export const metadata = {
   title: `${site.schoolName} Class of ${site.classYear} Reunion`,
   description: site.tagline,
