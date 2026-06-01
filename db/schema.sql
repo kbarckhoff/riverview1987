@@ -87,4 +87,15 @@ CREATE TABLE IF NOT EXISTS likes (
 CREATE INDEX IF NOT EXISTS idx_classmates_name ON classmates (full_name);
 CREATE INDEX IF NOT EXISTS idx_comments_post ON comments (post_id);
 
+CREATE TABLE IF NOT EXISTS feed_replies (
+  id          SERIAL PRIMARY KEY,
+  post_id     INTEGER NOT NULL REFERENCES feed_posts(id) ON DELETE CASCADE,
+  member_id   INTEGER REFERENCES members(id) ON DELETE SET NULL,
+  author_name TEXT NOT NULL,
+  body        TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_feed_replies_post ON feed_replies (post_id);
+
+
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_classmates_member ON classmates (member_id) WHERE member_id IS NOT NULL;

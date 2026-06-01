@@ -78,3 +78,22 @@ export async function adminDeleteComment(formData) {
   await query("DELETE FROM comments WHERE id=$1", [Number(formData.get("comment_id"))]);
   revalidatePath("/flashback");
 }
+
+
+export async function createFeedReply(formData) {
+  const me = await getCurrentMember(); if (!me) throw new Error("Please log in.");
+  const postId = Number(formData.get("post_id")); const body = str(formData.get("body"), 1000);
+  if (!postId || !body) return;
+  await query("INSERT INTO feed_replies (post_id,member_id,author_name,body) VALUES ($1,$2,$3,$4)", [postId, me.id, me.name, body]);
+  revalidatePath("/feed");
+}
+export async function adminDeleteFeedPost(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  await query("DELETE FROM feed_posts WHERE id=$1", [Number(formData.get("post_id"))]);
+  revalidatePath("/feed");
+}
+export async function adminDeleteFeedReply(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  await query("DELETE FROM feed_replies WHERE id=$1", [Number(formData.get("reply_id"))]);
+  revalidatePath("/feed");
+}
