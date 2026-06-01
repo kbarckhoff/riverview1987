@@ -113,3 +113,19 @@ export async function adminDeleteFeedReply(formData) {
   await query("DELETE FROM feed_replies WHERE id=$1", [Number(formData.get("reply_id"))]);
   revalidatePath("/feed");
 }
+
+
+export async function addMemorialAdmin(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  const full_name = str(formData.get("full_name"), 120); if (!full_name) return;
+  const yr = (v) => { const n = parseInt((v ?? "").toString(), 10); return Number.isFinite(n) ? n : null; };
+  const photoUrl = await storePhoto(formData.get("photo"));
+  await query("INSERT INTO memorials (full_name,birth_year,passed_year,tribute,photo_url) VALUES ($1,$2,$3,$4,$5)",
+    [full_name, yr(formData.get("birth_year")), yr(formData.get("passed_year")), str(formData.get("tribute"), 2000), photoUrl]);
+  revalidatePath("/memorials");
+}
+export async function deleteMemorialAdmin(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  await query("DELETE FROM memorials WHERE id=$1", [Number(formData.get("id"))]);
+  revalidatePath("/memorials");
+}

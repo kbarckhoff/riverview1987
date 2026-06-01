@@ -20,6 +20,9 @@ export default function LoginPage({ searchParams }) {
         <p className="meta" style={{ marginTop: 14 }}>
           New here? <Link href="/account/register">Create an account</Link>
         </p>
+        <p className="meta" style={{ marginTop: 4 }}>
+          <Link href="/account/forgot">Forgot password?</Link>
+        </p>
       </div>
     </section>
   );

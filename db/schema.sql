@@ -99,3 +99,9 @@ CREATE INDEX IF NOT EXISTS idx_feed_replies_post ON feed_replies (post_id);
 
 
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_classmates_member ON classmates (member_id) WHERE member_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  token      TEXT PRIMARY KEY,
+  member_id  INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+  expires_at TIMESTAMPTZ NOT NULL
+);
