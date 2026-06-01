@@ -5,11 +5,12 @@ import Collage from "./components/Collage";
 import Icon from "./components/Icon";
 
 const features = [
-  { href: "/classmates", icon: "people", title: "Classmates", desc: "Add yourself, then & now photos, and what everyone's up to." },
-  { href: "/where-are-they-now", icon: "pin", title: "Where Are They Now", desc: "See our class spread across the map, city by city." },
+  { href: "/classmates", icon: "people", title: "Classmates", desc: "Add your then & now, and see where everyone landed on the map." },
   { href: "/memorials", icon: "heart", title: "Memorials", desc: "Honoring the Raiders we've lost. Leave a tribute." },
-  { href: "/flashback", icon: "camera", title: "Flashback", desc: "Prom, homecoming, graduation — the photos that started it all." },
-  { href: "/feed", icon: "chat", title: "Feed", desc: "Catch up, plan rides, and reminisce before the big night." },
+  { href: "/flashback", icon: "camera", title: "Flashback", desc: "Yearbook throwbacks — like and comment on the memories." },
+  { href: "/teachers", icon: "gradcap", title: "Teachers", desc: "The teachers who shaped us, and your favorite memories." },
+  { href: "/feed", icon: "chat", title: "Feed", desc: "Start a thread, reply, and reminisce before the big night." },
+  { href: "/soundtrack", icon: "music", title: "Soundtrack", desc: "The songs of '87 — play the Spotify & Apple Music lists." },
 ];
 
 export default function HomePage() {

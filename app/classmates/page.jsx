@@ -1,16 +1,18 @@
 import Link from "next/link";
 import site from "@/lib/site-config";
-import { getClassmates } from "@/lib/data";
+import { getClassmates, getClassmatesWithCoords } from "@/lib/data";
 import { getCurrentMember } from "@/lib/member-auth";
 import { getProfileForMember } from "@/lib/community";
 import Avatar from "../components/Avatar";
 import ProfileFormClient from "../components/ProfileFormClient";
+import Map from "../where-are-they-now/Map";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Classmates Directory" };
+export const metadata = { title: "Classmates" };
 
 export default async function ClassmatesPage() {
   const classmates = await getClassmates();
+  const coords = await getClassmatesWithCoords();
   const me = await getCurrentMember();
   const profile = me ? await getProfileForMember(me.id) : null;
 
@@ -26,7 +28,7 @@ export default async function ClassmatesPage() {
           {!me ? (
             <div className="form access-gate">
               <h3 style={{ marginTop: 0 }}>Add yourself to the directory</h3>
-              <p className="meta" style={{ marginTop: 0 }}>Create an account (you&apos;ll need the class access code) to add your profile and photos.</p>
+              <p className="meta" style={{ marginTop: 0 }}>Create an account (you&apos;ll need the class access code) to add your profile, photos, and city.</p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <Link href="/account/register" className="btn">Create Account</Link>
                 <Link href="/account/login" className="btn btn-outline">Log In</Link>
@@ -35,7 +37,7 @@ export default async function ClassmatesPage() {
           ) : profile ? (
             <div className="form" style={{ maxWidth: "none" }}>
               <h3 style={{ marginTop: 0 }}>You&apos;re in the directory ✓</h3>
-              <p className="meta" style={{ marginTop: 0 }}>Your profile is live below. You can update it anytime — there&apos;s just one profile per person.</p>
+              <p className="meta" style={{ marginTop: 0 }}>Your profile is live below. Update it anytime — one profile per person. (Your city places you on the map.)</p>
               <details className="disclosure">
                 <summary className="btn btn-outline">Edit my info</summary>
                 <div style={{ marginTop: 16 }}><ProfileFormClient profile={profile} /></div>
@@ -43,14 +45,25 @@ export default async function ClassmatesPage() {
             </div>
           ) : (
             <>
-              <div className="section-head"><h2>Add Your Profile</h2><p>Then &amp; now photos, where you landed, and what you&apos;ve been up to.</p></div>
+              <div className="section-head"><h2>Add Your Profile</h2><p>Then &amp; now photos, your city (puts you on the map), and what you&apos;ve been up to.</p></div>
               <ProfileFormClient profile={null} />
             </>
           )}
         </div>
       </section>
 
-      <section className="section"><div className="container">
+      {coords.length > 0 ? (
+        <section className="section"><div className="container">
+          <div className="section-head">
+            <h2>Where Are They Now</h2>
+            <p>{coords.length} classmate{coords.length === 1 ? "" : "s"} on the map so far — click a dot to see who&apos;s there.</p>
+          </div>
+          <Map points={coords} center={site.map.center} zoom={site.map.zoom} accent={site.theme.accent} />
+        </div></section>
+      ) : null}
+
+      <section className="section" style={{ paddingTop: coords.length ? 0 : undefined }}><div className="container">
+        <div className="section-head"><h2>The Directory</h2></div>
         {classmates.length === 0 ? (
           <p className="empty">No classmates added yet. Be the first!</p>
         ) : (

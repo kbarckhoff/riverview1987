@@ -6,7 +6,6 @@ import { logoutAccount } from "../account/actions";
 const links = [
   { href: "/", label: "Home" },
   { href: "/classmates", label: "Classmates" },
-  { href: "/where-are-they-now", label: "Where Are They Now" },
   { href: "/memorials", label: "Memorials" },
   { href: "/flashback", label: "Flashback" },
   { href: "/teachers", label: "Teachers" },
