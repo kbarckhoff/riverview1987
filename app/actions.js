@@ -17,20 +17,36 @@ async function storePhoto(file) {
   return `/api/photo/${rows[0].id}`;
 }
 
+async function geocodeCity(city) {
+  if (!city) return { lat: null, lng: null };
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(city)}`,
+      { headers: { "User-Agent": "RiverviewRaidersReunion/1.0 (reunion@riverview1987.com)" }, cache: "no-store" }
+    );
+    if (!res.ok) return { lat: null, lng: null };
+    const j = await res.json();
+    if (Array.isArray(j) && j.length) return { lat: parseFloat(j[0].lat), lng: parseFloat(j[0].lon) };
+  } catch {}
+  return { lat: null, lng: null };
+}
+
 export async function saveProfile(formData) {
   const me = await getCurrentMember(); if (!me) throw new Error("Please log in.");
   const full_name = str(formData.get("full_name"), 120) || me.name;
+  const city = str(formData.get("current_city"), 160);
   const thenUrl = await storePhoto(formData.get("photo_then"));
   const nowUrl = await storePhoto(formData.get("photo_now"));
-  const vals = [full_name, str(formData.get("maiden_name"), 120), str(formData.get("occupation"), 160), str(formData.get("bio"), 2000), str(formData.get("current_city"), 160)];
+  const { lat, lng } = await geocodeCity(city);
+  const vals = [full_name, str(formData.get("maiden_name"), 120), str(formData.get("occupation"), 160), str(formData.get("bio"), 2000), city, lat, lng];
   const existing = await query("SELECT id FROM classmates WHERE member_id=$1", [me.id]);
   if (existing.rows.length) {
-    await query(`UPDATE classmates SET full_name=$1,maiden_name=$2,occupation=$3,bio=$4,current_city=$5,
-      photo_then_url=COALESCE($6,photo_then_url), photo_now_url=COALESCE($7,photo_now_url) WHERE member_id=$8`,
+    await query(`UPDATE classmates SET full_name=$1,maiden_name=$2,occupation=$3,bio=$4,current_city=$5,lat=$6,lng=$7,
+      photo_then_url=COALESCE($8,photo_then_url), photo_now_url=COALESCE($9,photo_now_url) WHERE member_id=$10`,
       [...vals, thenUrl, nowUrl, me.id]);
   } else {
-    await query(`INSERT INTO classmates (full_name,maiden_name,occupation,bio,current_city,photo_then_url,photo_now_url,member_id)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`, [...vals, thenUrl, nowUrl, me.id]);
+    await query(`INSERT INTO classmates (full_name,maiden_name,occupation,bio,current_city,lat,lng,photo_then_url,photo_now_url,member_id)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`, [...vals, thenUrl, nowUrl, me.id]);
   }
   revalidatePath("/classmates"); revalidatePath("/where-are-they-now");
 }
