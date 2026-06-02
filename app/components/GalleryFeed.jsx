@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { timeAgo } from "@/lib/format";
 import PhotoUploadClient from "./PhotoUploadClient";
-import { addComment, toggleLike, adminDeletePost, adminDeleteComment } from "../actions";
+import { addComment, toggleLike, adminDeletePost, adminDeleteComment, editPostCaption } from "../actions";
 
 export default function GalleryFeed({ me, posts, comments, category, uploadTitle, uploadButton, captionPlaceholder, emptyText, commentPlaceholder }) {
   return (
@@ -42,6 +42,17 @@ export default function GalleryFeed({ me, posts, comments, category, uploadTitle
                     </form>
                   ) : null}
                 </div>
+
+                {me?.is_admin ? (
+                  <details className="disclosure" style={{ marginTop: 8 }}>
+                    <summary className="meta" style={{ cursor: "pointer" }}>Edit caption</summary>
+                    <form action={editPostCaption} className="cmt-form" style={{ marginTop: 8 }}>
+                      <input type="hidden" name="post_id" value={p.id} />
+                      <input name="caption" defaultValue={p.caption || ""} placeholder="Caption" />
+                      <button className="btn" type="submit">Save</button>
+                    </form>
+                  </details>
+                ) : null}
 
                 {(comments[p.id] || []).length ? (
                   <div className="comments">

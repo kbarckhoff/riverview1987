@@ -39,6 +39,7 @@ export default async function Nav() {
             {links.map((l) => (
               <Link key={l.href} href={l.href}>{l.label}</Link>
             ))}
+            {me?.is_admin ? <Link href="/admins">Admins</Link> : null}
           </div>
           <div className="nav-auth">
             {me ? (

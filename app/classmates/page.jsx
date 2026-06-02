@@ -5,6 +5,7 @@ import { getCurrentMember } from "@/lib/member-auth";
 import { getProfileForMember } from "@/lib/community";
 import Avatar from "../components/Avatar";
 import ProfileFormClient from "../components/ProfileFormClient";
+import { deleteClassmateAdmin } from "../actions";
 import Map from "../where-are-they-now/Map";
 
 export const dynamic = "force-dynamic";
@@ -84,6 +85,12 @@ export default async function ClassmatesPage() {
                   <h3>{c.full_name}</h3>
                   {c.occupation ? <p className="meta">{c.occupation}{c.current_city ? ` · ${c.current_city}` : ""}</p> : c.current_city ? <p className="meta">{c.current_city}</p> : null}
                   {c.bio ? <p style={{ margin: 0 }}>{c.bio}</p> : null}
+                  {me?.is_admin ? (
+                    <form action={deleteClassmateAdmin} style={{ marginTop: 10 }}>
+                      <input type="hidden" name="id" value={c.id} />
+                      <button className="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                  ) : null}
                 </div>
               </article>
             ))}

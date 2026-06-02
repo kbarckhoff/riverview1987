@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { query } from "@/lib/db";
 import { getCurrentMember } from "@/lib/member-auth";
+import crypto from "crypto";
 
 const MAX = 8 * 1024 * 1024;
 function str(v, max = 1000) { const s = (v ?? "").toString().trim(); return s === "" ? null : s.slice(0, max); }
@@ -14,7 +15,7 @@ async function storePhoto(file) {
   if (!mime.startsWith("image/")) throw new Error("Only image files are allowed.");
   const buf = Buffer.from(await file.arrayBuffer());
   const { rows } = await query("INSERT INTO photos (mime, data) VALUES ($1,$2) RETURNING id", [mime, buf]);
-  return `/api/photo/${rows[0].id}`;
+  return `/api/photo/${rows[0].id}?v=${crypto.randomBytes(4).toString("hex")}`;
 }
 
 async function geocodeCity(city) {
@@ -129,4 +130,30 @@ export async function deleteMemorialAdmin(formData) {
   const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
   await query("DELETE FROM memorials WHERE id=$1", [Number(formData.get("id"))]);
   revalidatePath("/memorials");
+}
+
+
+export async function editPostCaption(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  await query("UPDATE gallery_posts SET caption=$1 WHERE id=$2", [str(formData.get("caption"), 300), Number(formData.get("post_id"))]);
+  revalidatePath("/flashback"); revalidatePath("/teachers");
+}
+export async function deleteClassmateAdmin(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  await query("DELETE FROM classmates WHERE id=$1", [Number(formData.get("id"))]);
+  revalidatePath("/classmates");
+}
+export async function setMemberAdmin(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  const id = Number(formData.get("member_id")); if (!id) return;
+  const makeAdmin = formData.get("make") === "1";
+  await query("UPDATE members SET is_admin=$1 WHERE id=$2", [makeAdmin, id]);
+  revalidatePath("/admins");
+}
+export async function addAdminByEmail(formData) {
+  const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
+  const email = (formData.get("email") || "").toString().trim().toLowerCase();
+  if (!email.includes("@")) return;
+  await query("UPDATE members SET is_admin=true WHERE email=$1", [email]);
+  revalidatePath("/admins");
 }
