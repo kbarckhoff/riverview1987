@@ -57,8 +57,9 @@ export async function postGalleryPhoto(formData) {
   const url = await storePhoto(formData.get("photo"));
   if (!url) return;
   const cat = (formData.get("category") || "flashback").toString() === "teacher" ? "teacher" : "flashback";
+  const ownerId = me.is_admin ? null : me.id; // admin posts appear with no name
   await query("INSERT INTO gallery_posts (member_id,image_url,caption,category) VALUES ($1,$2,$3,$4) ON CONFLICT (image_url) DO NOTHING",
-    [me.id, url, str(formData.get("caption"), 300), cat]);
+    [ownerId, url, str(formData.get("caption"), 300), cat]);
   revalidatePath("/flashback"); revalidatePath("/teachers");
 }
 

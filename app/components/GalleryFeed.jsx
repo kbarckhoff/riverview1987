@@ -24,7 +24,7 @@ export default function GalleryFeed({ me, posts, comments, category, uploadTitle
               <img className="gpost-img" src={p.image_url} alt={p.caption || "Raiders photo"} loading="lazy" />
               <div className="gpost-body">
                 <div className="gpost-head">
-                  <span className="gpost-author">{p.poster_name || "Raiders Throwback"}</span>
+                  <span className="gpost-author">{p.poster_name || ""}</span>
                   <span className="gpost-time">{timeAgo(p.created_at)}</span>
                 </div>
                 {p.caption ? <p className="gpost-caption">{p.caption}</p> : null}

@@ -4,8 +4,12 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   experimental: {
-    // allow photo uploads up to ~8MB through server actions
     serverActions: { bodySizeLimit: "8mb" },
+    // Ship the static photo folders with the serverless functions that read them.
+    outputFileTracingIncludes: {
+      "/flashback": ["./public/gallery/**"],
+      "/teachers": ["./public/teachers/**"],
+    },
   },
 };
 

@@ -11,6 +11,7 @@ const links = [
   { href: "/teachers", label: "Teachers" },
   { href: "/feed", label: "Feed" },
   { href: "/soundtrack", label: "Soundtrack" },
+  { href: "/accommodations", label: "Hotels" },
 ];
 
 export default async function Nav() {
