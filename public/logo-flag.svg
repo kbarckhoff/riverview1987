@@ -13,5 +13,5 @@
         fill="#111111" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
   <!-- Gold R -->
   <text x="96" y="74" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="bold"
-        fill="#f4c20d" stroke="#ffffff" stroke-width="2" text-anchor="middle">R</text>
+        fill="#FABB00" stroke="#ffffff" stroke-width="2" text-anchor="middle">R</text>
 </svg>
