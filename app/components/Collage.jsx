@@ -1,9 +1,5 @@
 import site from "@/lib/site-config";
 
-// Tile size pattern that creates a Summit-style mosaic. Repeats if there are
-// more photos than entries here.
-const PATTERN = ["wide", "", "tall", "", "", "wide", "", "tall"];
-
 export default function Collage() {
   const photos = site.collage || [];
   if (photos.length === 0) return null;
@@ -11,7 +7,7 @@ export default function Collage() {
   return (
     <div className="collage">
       {photos.map((src, i) => (
-        <div className={`tile ${PATTERN[i % PATTERN.length]}`} key={i}>
+        <div className="tile" key={i}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={`${site.schoolName} memory ${i + 1}`} loading="lazy" />
         </div>
