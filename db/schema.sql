@@ -107,3 +107,8 @@ CREATE TABLE IF NOT EXISTS password_resets (
   member_id  INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   expires_at TIMESTAMPTZ NOT NULL
 );
+
+-- Static throwbacks an admin has permanently removed (so they don't re-add).
+CREATE TABLE IF NOT EXISTS gallery_hidden (
+  image_url TEXT PRIMARY KEY
+);

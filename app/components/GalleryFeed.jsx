@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { timeAgo } from "@/lib/format";
 import PhotoUploadClient from "./PhotoUploadClient";
+import ZoomImage from "./ZoomImage";
 import { addComment, toggleLike, adminDeletePost, adminDeleteComment, editPostCaption } from "../actions";
 
 export default function GalleryFeed({ me, posts, comments, category, uploadTitle, uploadButton, captionPlaceholder, emptyText, commentPlaceholder }) {
@@ -20,8 +21,7 @@ export default function GalleryFeed({ me, posts, comments, category, uploadTitle
         <div className="gallery-feed">
           {posts.map((p) => (
             <article key={p.id} className="gpost">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="gpost-img" src={p.image_url} alt={p.caption || "Raiders photo"} loading="lazy" />
+              <ZoomImage className="gpost-img" src={p.image_url} alt={p.caption || "Raiders photo"} />
               <div className="gpost-body">
                 <div className="gpost-head">
                   <span className="gpost-author">{p.poster_name || ""}</span>

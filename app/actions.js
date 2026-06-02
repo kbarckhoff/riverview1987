@@ -89,8 +89,14 @@ export async function createFeedPost(formData) {
 
 export async function adminDeletePost(formData) {
   const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
-  await query("DELETE FROM gallery_posts WHERE id=$1", [Number(formData.get("post_id"))]);
-  revalidatePath("/flashback");
+  const id = Number(formData.get("post_id"));
+  const { rows } = await query("SELECT image_url FROM gallery_posts WHERE id=$1", [id]);
+  await query("DELETE FROM gallery_posts WHERE id=$1", [id]);
+  if (rows.length && rows[0].image_url.startsWith("/")) {
+    // static throwback -> remember so it doesn't auto-return
+    await query("INSERT INTO gallery_hidden (image_url) VALUES ($1) ON CONFLICT DO NOTHING", [rows[0].image_url]);
+  }
+  revalidatePath("/flashback"); revalidatePath("/teachers");
 }
 export async function adminDeleteComment(formData) {
   const me = await getCurrentMember(); if (!me || !me.is_admin) throw new Error("Admins only.");
